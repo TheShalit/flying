@@ -5,7 +5,7 @@ public class DataStructure implements DT {
 	//////////////// DON'T DELETE THIS CONSTRUCTOR ////////////////
 	public DataStructure()
 	{
-		//TODO
+
 	}
 
 	@Override
