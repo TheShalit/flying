@@ -219,14 +219,17 @@ public class DataStructure implements DT {
 
     @Override
     public Boolean getLargestAxis() {
-        // TODO Auto-generated method stub
-        return null;
+        return (lastByX.getPointValue(true) - firstByX.getPointValue(true)) >
+                (lastByY.getPointValue(false) - firstByY.getPointValue(false));
     }
 
     @Override
     public Container getMedian(Boolean axis) {
-        // TODO Auto-generated method stub
-        return null;
+        Container curr = getFirstByAxis(axis);
+        for (int i = 0; i < size / 2 - 1; i++)
+            curr = curr.getNext(axis);
+
+        return curr;
     }
 
     @Override
