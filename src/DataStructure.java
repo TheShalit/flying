@@ -29,6 +29,20 @@ public class DataStructure implements DT {
             return lastByY;
     }
 
+    public void setFirstByAxis(Container first, boolean axis) {
+        if (axis)
+            firstByX = first;
+        else
+            firstByY = first;
+    }
+
+    public void setLastByAxis(Container last, boolean axis) {
+        if (axis)
+            lastByX = last;
+        else
+            lastByY = last;
+    }
+
     public void addPoint(Point point) {
         Container newPoint = new Container(point);
         Container curr, next;
@@ -42,30 +56,30 @@ public class DataStructure implements DT {
             //insert to x axis
 
             if (point.getX() <= firstByX.getData().getX()) {
-                newPoint.setLinkNext(firstByX, true);
-                firstByX.setLinkPrev(newPoint, true);
+                newPoint.setNext(firstByX, true);
+                firstByX.setPrev(newPoint, true);
                 firstByX = newPoint;
             } else {
                 curr = firstByX;
-                next = curr.getLinkNext(true);
+                next = curr.getNext(true);
                 int val = newPoint.getData().getX();
 
                 while (next != null) {
                     if (val >= curr.getData().getX() && val <= next.getData().getX()) {
-                        curr.setLinkNext(newPoint, true);
-                        newPoint.setLinkPrev(curr, true);
-                        newPoint.setLinkNext(next, true);
-                        next.setLinkPrev(newPoint, true);
+                        curr.setNext(newPoint, true);
+                        newPoint.setPrev(curr, true);
+                        newPoint.setNext(next, true);
+                        next.setPrev(newPoint, true);
                         ins = true;
                         break;
                     } else {
                         curr = next;
-                        next = next.getLinkNext(true);
+                        next = next.getNext(true);
                     }
                 }
                 if (!ins) {
-                    curr.setLinkNext(newPoint, true);
-                    newPoint.setLinkPrev(curr, true);
+                    curr.setNext(newPoint, true);
+                    newPoint.setPrev(curr, true);
                     lastByX = newPoint;
 
                 }
@@ -74,30 +88,30 @@ public class DataStructure implements DT {
             //insert to y axis
 
             if (point.getY() <= firstByY.getData().getY()) {
-                newPoint.setLinkNext(firstByY, false);
-                firstByY.setLinkPrev(newPoint, false);
+                newPoint.setNext(firstByY, false);
+                firstByY.setPrev(newPoint, false);
                 firstByY = newPoint;
             } else {
                 curr = firstByX;
-                next = curr.getLinkNext(false);
+                next = curr.getNext(false);
                 int val = newPoint.getData().getY();
 
                 while (next != null) {
                     if (val >= curr.getData().getY() && val <= next.getData().getY()) {
-                        curr.setLinkNext(newPoint, false);
-                        newPoint.setLinkPrev(curr, false);
-                        newPoint.setLinkNext(next, false);
-                        next.setLinkPrev(newPoint, false);
+                        curr.setNext(newPoint, false);
+                        newPoint.setPrev(curr, false);
+                        newPoint.setNext(next, false);
+                        next.setPrev(newPoint, false);
                         ins = true;
                         break;
                     } else {
                         curr = next;
-                        next = next.getLinkNext(false);
+                        next = next.getNext(false);
                     }
                 }
                 if (!ins) {
-                    curr.setLinkNext(newPoint, false);
-                    newPoint.setLinkPrev(curr, false);
+                    curr.setNext(newPoint, false);
+                    newPoint.setPrev(curr, false);
                     lastByY = newPoint;
 
                 }
@@ -124,7 +138,7 @@ public class DataStructure implements DT {
         while (curr != null && curr.getPointValue(axis) <= max & curr.getPointValue(axis) >= min) {
 
             sum++;
-            curr = curr.getLinkNext(axis);
+            curr = curr.getNext(axis);
         }
 
         return sum;
@@ -138,7 +152,7 @@ public class DataStructure implements DT {
         while (curr != null && curr.getPointValue(axis) >= min & curr.getPointValue(axis) <= max) {
             output[index] = curr.getData();
             index++;
-            curr = curr.getLinkNext(axis);
+            curr = curr.getNext(axis);
 
         }
 
@@ -155,7 +169,7 @@ public class DataStructure implements DT {
 
             output[index] = curr.getData();
             index++;
-            curr = curr.getLinkNext(!axis);
+            curr = curr.getNext(!axis);
         }
 
         return output;
@@ -163,14 +177,44 @@ public class DataStructure implements DT {
 
     @Override
     public double getDensity() {
-        // TODO Auto-generated method stub
-        return 0;
+        return size /
+                ((lastByX.getPointValue(true) - firstByX.getPointValue(true)) *
+                        (lastByY.getPointValue(false) - firstByY.getPointValue(false)));
     }
 
     @Override
     public void narrowRange(int min, int max, Boolean axis) {
-        // TODO Auto-generated method stub
+        int counter = 0;
 
+        // remove by min
+        Container curr = getFirstByAxis(axis);
+        while (curr.getPointValue(axis) <= min) {
+            counter++;
+            curr.removeSelf();
+            updatePositions(curr, !axis);
+            curr = curr.getNext(axis);
+        }
+        setFirstByAxis(curr, axis);
+
+        // remove by max
+        curr = getLastByAxis(axis);
+        while (curr.getPointValue(axis) >= max) {
+            counter++;
+            curr.removeSelf();
+            updatePositions(curr, !axis);
+            curr = curr.getPrev(axis);
+        }
+        setLastByAxis(curr, axis);
+
+        size -= counter;
+    }
+
+    public void updatePositions(Container container, boolean axis) {
+        if (container.equals(getFirstByAxis(axis)))
+            setFirstByAxis(container.getNext(axis), axis);
+
+        if (container.equals(getLastByAxis(axis)))
+            setLastByAxis(container.getPrev(axis), axis);
     }
 
     @Override

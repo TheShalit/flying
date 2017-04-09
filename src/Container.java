@@ -41,7 +41,7 @@ public class Container {
             return data.getY();
     }
 
-    public void setLinkNext(Container next, boolean axis) {
+    public void setNext(Container next, boolean axis) {
         if (axis)
             nextX = next;
         else
@@ -49,14 +49,14 @@ public class Container {
     }
     /* Function to set link to previous node */
 
-    public void setLinkPrev(Container prev, boolean axis) {
+    public void setPrev(Container prev, boolean axis) {
         if (axis)
             prevX = prev;
         else
             prevY = prev;
     }
 
-    public Container getLinkNext(boolean axis) {
+    public Container getNext(boolean axis) {
         if (axis)
             return nextX;
         else
@@ -64,11 +64,23 @@ public class Container {
     }
     /* Function to set link to previous node */
 
-    public Container getLinkPrev(boolean axis) {
+    public Container getPrev(boolean axis) {
         if (axis)
             return prevX;
         else
             return prevY;
+    }
+
+    public void removeSelf() {
+        if (prevX != null)
+            prevX.setNext(nextX, true);
+        if (prevY != null)
+            prevY.setNext(nextY, false);
+
+        if (nextX != null)
+            nextX.setNext(prevX, true);
+        if (nextY != null)
+            nextY.setNext(prevY, false);
     }
 
     public String toString() {
