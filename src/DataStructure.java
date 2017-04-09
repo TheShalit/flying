@@ -123,7 +123,7 @@ public class DataStructure implements DT {
     }
 
     public boolean isEmpty() {
-        return firstByX.equals(null);
+        return firstByX == null;
     }
 
     private int countPointsInRange(int min, int max, boolean axis) {
