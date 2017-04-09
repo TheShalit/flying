@@ -126,10 +126,6 @@ public class DataStructure implements DT {
         return firstByX.equals(null);
     }
 
-    public int getSize() {
-        return size;
-    }
-
     private int countPointsInRange(int min, int max, boolean axis) {
 
         int sum = 0;
@@ -235,7 +231,6 @@ public class DataStructure implements DT {
     @Override
     public Point[] nearestPairInStrip(Container container, double width,
                                       Boolean axis) {
-        // TODO Auto-generated method stub
         return null;
     }
 
@@ -244,9 +239,5 @@ public class DataStructure implements DT {
         // TODO Auto-generated method stub
         return null;
     }
-
-
-    //TODO: add members, methods, etc.
-
 }
 

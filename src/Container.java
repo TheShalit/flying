@@ -14,21 +14,6 @@ public class Container {
         prevY = null;
     }
 
-    public Container(Point point, Container next, Container prev, boolean axis) {
-        data = point;
-        if (axis) {
-            nextX = next;
-            nextY = null;
-            prevX = prev;
-            prevY = null;
-        } else {
-            nextX = null;
-            nextY = next;
-            prevX = null;
-            prevY = prev;
-        }
-    }
-
     //Don't delete or change this function
     public Point getData() {
         return data;
