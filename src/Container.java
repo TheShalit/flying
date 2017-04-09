@@ -56,6 +56,24 @@ public class Container {
             return prevY;
     }
 
+    public Container addPointTo(Container container, boolean axis) {
+        if (getPointValue(axis) > container.getPointValue(axis)) {
+            setPrev(container, axis);
+            container.setNext(this, axis);
+            return container;
+        } else {
+            if (getNext(axis) != null) {
+                Container curr = getNext(axis).addPointTo(container, axis);
+                setNext(curr, axis);
+                curr.setPrev(this, axis);
+            } else {
+                setNext(container, axis);
+                container.setPrev(this, axis);
+            }
+            return this;
+        }
+    }
+
     public void removeSelf() {
         if (prevX != null)
             prevX.setNext(nextX, true);

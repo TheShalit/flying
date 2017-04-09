@@ -45,79 +45,21 @@ public class DataStructure implements DT {
 
     public void addPoint(Point point) {
         Container newPoint = new Container(point);
-        Container curr, next;
-        boolean ins = false;
+
         if (isEmpty()) {
             firstByX = newPoint;
             lastByX = newPoint;
             firstByY = newPoint;
             lastByY = newPoint;
         } else {
-            //insert to x axis
+            firstByX = firstByX.addPointTo(newPoint, true);
+            if (newPoint.getNext(true) == null)
+                lastByX = newPoint;
 
-            if (point.getX() <= firstByX.getData().getX()) {
-                newPoint.setNext(firstByX, true);
-                firstByX.setPrev(newPoint, true);
-                firstByX = newPoint;
-            } else {
-                curr = firstByX;
-                next = curr.getNext(true);
-                int val = newPoint.getData().getX();
-
-                while (next != null) {
-                    if (val >= curr.getData().getX() && val <= next.getData().getX()) {
-                        curr.setNext(newPoint, true);
-                        newPoint.setPrev(curr, true);
-                        newPoint.setNext(next, true);
-                        next.setPrev(newPoint, true);
-                        ins = true;
-                        break;
-                    } else {
-                        curr = next;
-                        next = next.getNext(true);
-                    }
-                }
-                if (!ins) {
-                    curr.setNext(newPoint, true);
-                    newPoint.setPrev(curr, true);
-                    lastByX = newPoint;
-
-                }
-            }//small else
-
-            //insert to y axis
-
-            if (point.getY() <= firstByY.getData().getY()) {
-                newPoint.setNext(firstByY, false);
-                firstByY.setPrev(newPoint, false);
-                firstByY = newPoint;
-            } else {
-                curr = firstByX;
-                next = curr.getNext(false);
-                int val = newPoint.getData().getY();
-
-                while (next != null) {
-                    if (val >= curr.getData().getY() && val <= next.getData().getY()) {
-                        curr.setNext(newPoint, false);
-                        newPoint.setPrev(curr, false);
-                        newPoint.setNext(next, false);
-                        next.setPrev(newPoint, false);
-                        ins = true;
-                        break;
-                    } else {
-                        curr = next;
-                        next = next.getNext(false);
-                    }
-                }
-                if (!ins) {
-                    curr.setNext(newPoint, false);
-                    newPoint.setPrev(curr, false);
-                    lastByY = newPoint;
-
-                }
-            }//small else
-
-        } //notEmpty else
+            firstByY = firstByY.addPointTo(newPoint, false);
+            if (newPoint.getNext(false) == null)
+                lastByY = newPoint;
+        }
 
         size++;
     }
@@ -127,13 +69,12 @@ public class DataStructure implements DT {
     }
 
     private int countPointsInRange(int min, int max, boolean axis) {
-
         int sum = 0;
         Container curr = getFirstByAxis(axis);
 
-        while (curr != null && curr.getPointValue(axis) <= max & curr.getPointValue(axis) >= min) {
-
-            sum++;
+        while (curr != null) {
+            if (curr.getPointValue(axis) >= min & curr.getPointValue(axis) <= max)
+                sum++;
             curr = curr.getNext(axis);
         }
 
@@ -141,13 +82,14 @@ public class DataStructure implements DT {
     }
 
     public Point[] getPointsInRangeRegAxis(int min, int max, Boolean axis) {
-
         Point[] output = new Point[countPointsInRange(min, max, axis)];
         Container curr = getFirstByAxis(axis);
         int index = 0;
-        while (curr != null && curr.getPointValue(axis) >= min & curr.getPointValue(axis) <= max) {
-            output[index] = curr.getData();
-            index++;
+
+        while (curr != null) {
+            if (curr.getPointValue(axis) >= min & curr.getPointValue(axis) <= max)
+                output[index++] = curr.getData();
+
             curr = curr.getNext(axis);
 
         }
@@ -159,12 +101,11 @@ public class DataStructure implements DT {
     public Point[] getPointsInRangeOppAxis(int min, int max, Boolean axis) {
         Point[] output = new Point[countPointsInRange(min, max, axis)];
         Container curr = getFirstByAxis(!axis);
-
         int index = 0;
-        while (curr != null && curr.getPointValue(axis) <= max & curr.getPointValue(axis) >= min) {
 
-            output[index] = curr.getData();
-            index++;
+        while (curr != null) {
+            if (curr.getPointValue(axis) >= min & curr.getPointValue(axis) <= max)
+                output[index++] = curr.getData();
             curr = curr.getNext(!axis);
         }
 
