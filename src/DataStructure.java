@@ -72,7 +72,7 @@ public class DataStructure implements DT {
         int sum = 0;
         Container curr = getFirstByAxis(axis);
 
-        while (curr != null) {
+        while (curr != null && curr.getPointValue(axis) <= max) {
             if (curr.getPointValue(axis) >= min & curr.getPointValue(axis) <= max)
                 sum++;
             curr = curr.getNext(axis);
@@ -86,12 +86,11 @@ public class DataStructure implements DT {
         Container curr = getFirstByAxis(axis);
         int index = 0;
 
-        while (curr != null) {
+        while (curr != null && curr.getPointValue(axis) <= max) {
             if (curr.getPointValue(axis) >= min & curr.getPointValue(axis) <= max)
                 output[index++] = curr.getData();
 
             curr = curr.getNext(axis);
-
         }
 
         return output;
@@ -172,13 +171,35 @@ public class DataStructure implements DT {
     @Override
     public Point[] nearestPairInStrip(Container container, double width,
                                       Boolean axis) {
-        return null;
+        Point[] points = getPointsInRangeOppAxis((int) (container.getPointValue(axis) - width),
+                (int) (container.getPointValue(axis) + width),
+                axis);
+        Point[] result = new Point[2];
+        double shortestDistance = Double.POSITIVE_INFINITY;
+        double distance;
+
+        for (int i = 0; i < points.length; i++) {
+            for (int j = i + 1; j < Math.min(i + 6, points.length - i); j++) {
+                distance = getDistance(points[i], points[j]);
+
+                if (distance < shortestDistance) {
+                    shortestDistance = distance;
+                    result = new Point[]{points[i], points[j]};
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
     public Point[] nearestPair() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    protected static double getDistance(Point point1, Point point2) {
+        return Math.sqrt(Math.pow(point2.getX() - point1.getX(), 2) + Math.pow(point2.getY() - point1.getY(), 2));
     }
 }
 

@@ -89,8 +89,4 @@ public class Container {
     public String toString() {
         return data.toString();
     }
-
-    protected double getDistance(Point otherPoint) {
-        return Math.sqrt(Math.pow(otherPoint.getX() - data.getX(), 2) + Math.pow(otherPoint.getY() - data.getY(), 2));
-    }
 }
