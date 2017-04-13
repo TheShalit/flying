@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class DataStructure implements DT {
     private Container firstByX;
@@ -168,12 +169,49 @@ public class DataStructure implements DT {
         return curr;
     }
 
+    private int numOfPointsTillMax(Container container, int max, Boolean axis) {
+        int counter = 0;
+        while (container.getPointValue(axis) <= max) {
+            counter++;
+            container = container.getNext(axis);
+        }
+        return counter;
+    }
+
+    private int numOfPointsTillMin(Container container, int min, Boolean axis) {
+        int counter = 0;
+        while (container.getPointValue(axis) >= min) {
+            counter++;
+            container = container.getPrev(axis);
+        }
+        return counter;
+    }
+
     @Override
     public Point[] nearestPairInStrip(Container container, double width,
                                       Boolean axis) {
-        Point[] points = getPointsInRangeOppAxis((int) (container.getPointValue(axis) - width),
-                (int) (container.getPointValue(axis) + width),
-                axis);
+        int minAxis = (int) (container.getPointValue(axis) - width);
+        int maxAxis = (int) (container.getPointValue(axis) + width);
+        Point[] points;
+        if (getFirstByAxis(axis).getPointValue(axis) > minAxis & getLastByAxis(axis).getPointValue(axis) < maxAxis) {
+            points = getPointsInRangeOppAxis(minAxis, maxAxis, axis);
+        } else {
+            points = new Point[numOfPointsTillMax(container, maxAxis, axis) +
+                    numOfPointsTillMin(container.getPrev(axis), minAxis, axis)];
+            int idx = 0;
+            Container curr = container;
+            while (curr.getPointValue(axis) <= maxAxis) {
+                points[idx++] = curr.getData();
+                curr = curr.getNext(axis);
+            }
+            curr = container;
+            while (curr.getPointValue(axis) >= minAxis) {
+                points[idx++] = curr.getData();
+                curr = curr.getPrev(axis);
+            }
+
+            Arrays.sort(points, 0, points.length - 1, new PointsComparator(axis));
+        }
         Point[] result = new Point[2];
         double shortestDistance = Double.POSITIVE_INFINITY;
         double distance;
