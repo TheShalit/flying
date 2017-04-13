@@ -171,7 +171,7 @@ public class DataStructure implements DT {
 
     private int numOfPointsTillMax(Container container, int max, Boolean axis) {
         int counter = 0;
-        while (container.getPointValue(axis) <= max) {
+        while (container != null && container.getPointValue(axis) <= max) {
             counter++;
             container = container.getNext(axis);
         }
@@ -180,7 +180,7 @@ public class DataStructure implements DT {
 
     private int numOfPointsTillMin(Container container, int min, Boolean axis) {
         int counter = 0;
-        while (container.getPointValue(axis) >= min) {
+        while (container != null && container.getPointValue(axis) >= min) {
             counter++;
             container = container.getPrev(axis);
         }
@@ -200,12 +200,12 @@ public class DataStructure implements DT {
                     numOfPointsTillMin(container.getPrev(axis), minAxis, axis)];
             int idx = 0;
             Container curr = container;
-            while (curr.getPointValue(axis) <= maxAxis) {
+            while (curr != null && curr.getPointValue(axis) <= maxAxis) {
                 points[idx++] = curr.getData();
                 curr = curr.getNext(axis);
             }
-            curr = container;
-            while (curr.getPointValue(axis) >= minAxis) {
+            curr = container.getPrev(axis);
+            while (curr != null && curr.getPointValue(axis) >= minAxis) {
                 points[idx++] = curr.getData();
                 curr = curr.getPrev(axis);
             }
@@ -232,12 +232,22 @@ public class DataStructure implements DT {
 
     @Override
     public Point[] nearestPair() {
-        // TODO Auto-generated method stub
-        return null;
+        if (size < 2)
+            return new Point[]{};
+        else if (size == 2)
+            return new Point[]{firstByX.getData(), lastByX.getData()};
+        else {
+            boolean axis = getLargestAxis();
+            Container median = getMedian(axis);
+            double width = Math.max(median.getPointValue(axis) - getFirstByAxis(axis).getPointValue(axis),
+                    getLastByAxis(axis).getPointValue(axis) - median.getPointValue(axis));
+
+            return nearestPairInStrip(median, width, axis);
+        }
     }
 
     protected static double getDistance(Point point1, Point point2) {
-        return Math.sqrt(Math.pow(point2.getX() - point1.getX(), 2) + Math.pow(point2.getY() - point1.getY(), 2));
+        return Math.abs(Math.sqrt(Math.pow(point2.getX() - point1.getX(), 2) + Math.pow(point2.getY() - point1.getY(), 2)));
     }
 }
 
