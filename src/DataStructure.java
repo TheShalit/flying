@@ -5,7 +5,7 @@ public class DataStructure implements DT {
     private Container lastByX;
     private Container firstByY;
     private Container lastByY;
-    int size;
+    private int size;
 
     //////////////// DON'T DELETE THIS CONSTRUCTOR ////////////////
     public DataStructure() {
@@ -193,11 +193,13 @@ public class DataStructure implements DT {
         int minAxis = (int) (container.getPointValue(axis) - width);
         int maxAxis = (int) (container.getPointValue(axis) + width);
         Point[] points;
-        if (getFirstByAxis(axis).getPointValue(axis) > minAxis & getLastByAxis(axis).getPointValue(axis) < maxAxis) {
+        int pointsLength = numOfPointsTillMax(container, maxAxis, axis) +
+                numOfPointsTillMin(container.getPrev(axis), minAxis, axis);
+        if (pointsLength * Math.log(pointsLength) > size) {
             points = getPointsInRangeOppAxis(minAxis, maxAxis, axis);
         } else {
-            points = new Point[numOfPointsTillMax(container, maxAxis, axis) +
-                    numOfPointsTillMin(container.getPrev(axis), minAxis, axis)];
+            points = new Point[pointsLength];
+
             int idx = 0;
             Container curr = container;
             while (curr != null && curr.getPointValue(axis) <= maxAxis) {
