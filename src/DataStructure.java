@@ -163,7 +163,7 @@ public class DataStructure implements DT {
     @Override
     public Container getMedian(Boolean axis) {
         Container curr = getFirstByAxis(axis);
-        for (int i = 0; i < size / 2 - 1; i++)
+        for (int i = 0; i < size / 2; i++)
             curr = curr.getNext(axis);
 
         return curr;
@@ -246,7 +246,7 @@ public class DataStructure implements DT {
         }
     }
 
-    protected static double getDistance(Point point1, Point point2) {
+    private static double getDistance(Point point1, Point point2) {
         return Math.abs(Math.sqrt(Math.pow(point2.getX() - point1.getX(), 2) + Math.pow(point2.getY() - point1.getY(), 2)));
     }
 }
