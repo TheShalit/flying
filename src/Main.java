@@ -1090,7 +1090,7 @@ public class Main {
                 new Point(323, 476),
                 new Point(752, 891),
                 new Point(762, 110),
-                new Point(244, 434),
+                new Point(244, 434)
 
         };
         return points;
@@ -1136,6 +1136,7 @@ public class Main {
         Point[] resPoints = dt.nearestPair();
         double resultD = distance(resPoints[0],resPoints[1]);
         testName = "B"+testCounter;testCounter++;
+
         if(resultD<7.1)
             System.out.println("Test "+ testName+": passed :)");
         else

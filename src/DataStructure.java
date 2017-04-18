@@ -229,23 +229,51 @@ public class DataStructure implements DT {
             }
         }
 
-        return result;
+        if (shortestDistance == Double.POSITIVE_INFINITY)
+            return new Point[0];
+        else
+            return result;
     }
 
     @Override
     public Point[] nearestPair() {
-        if (size < 2)
-            return new Point[]{};
-        else if (size == 2)
-            return new Point[]{firstByX.getData(), lastByX.getData()};
-        else {
-            boolean axis = getLargestAxis();
-            Container median = getMedian(axis);
-            double width = Math.max(median.getPointValue(axis) - getFirstByAxis(axis).getPointValue(axis),
-                    getLastByAxis(axis).getPointValue(axis) - median.getPointValue(axis));
+        boolean axis = getLargestAxis();
+        return nearestPair(getFirstByAxis(axis), getLastByAxis(axis), axis);
+    }
 
-            return nearestPairInStrip(median, width, axis);
+    private Point[] nearestPair(Container fromCont, Container toCont, boolean axis) {
+        if (fromCont.equals(toCont))
+            return new Point[]{};
+        else if (fromCont.getNext(axis).equals(toCont))
+            return new Point[]{fromCont.getData(), toCont.getData()};
+        else {
+            Container median = getMedian(fromCont, toCont, axis);
+            Point[] nearestRight = nearestPair(median, toCont, axis);
+            Point[] nearestLeft = nearestPair(fromCont, median.getPrev(axis), axis);
+            double rightDist = Double.POSITIVE_INFINITY;
+            double leftDist = Double.POSITIVE_INFINITY;
+            if (nearestRight.length == 2)
+                rightDist = getDistance(nearestRight[0], nearestRight[1]);
+            if (nearestLeft.length == 2)
+                leftDist = getDistance(nearestLeft[0], nearestLeft[1]);
+
+            double minDist = Math.min(rightDist, leftDist);
+            Point[] nearestInStrip = nearestPairInStrip(median, 2 * minDist, axis);
+            if (nearestInStrip.length == 2 && getDistance(nearestInStrip[0], nearestInStrip[1]) < minDist)
+                return nearestInStrip;
+            else if (minDist == rightDist)
+                return nearestRight;
+            else
+                return nearestLeft;
         }
+    }
+
+    private Container getMedian(Container fromCont, Container toCont, boolean axis) {
+        while (!fromCont.equals(toCont) & !fromCont.getNext(axis).equals(toCont)) {
+            fromCont = fromCont.getNext(axis);
+            toCont = toCont.getPrev(axis);
+        }
+        return fromCont;
     }
 
     private static double getDistance(Point point1, Point point2) {
