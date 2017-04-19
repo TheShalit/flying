@@ -19,6 +19,7 @@ public class Container {
         return data;
     }
 
+    // get x or y by axis
     public int getPointValue(boolean axis) {
         if (axis)
             return data.getX();
@@ -26,14 +27,15 @@ public class Container {
             return data.getY();
     }
 
+    // set next by axis
     public void setNext(Container next, boolean axis) {
         if (axis)
             nextX = next;
         else
             nextY = next;
     }
-    /* Function to set link to previous node */
 
+    // set previous by axis
     public void setPrev(Container prev, boolean axis) {
         if (axis)
             prevX = prev;
@@ -41,14 +43,15 @@ public class Container {
             prevY = prev;
     }
 
+    // get next by axis
     public Container getNext(boolean axis) {
         if (axis)
             return nextX;
         else
             return nextY;
     }
-    /* Function to set link to previous node */
 
+    // get previous by axis
     public Container getPrev(boolean axis) {
         if (axis)
             return prevX;
@@ -56,17 +59,19 @@ public class Container {
             return prevY;
     }
 
+    // recursively sets container to the correct place in the structure
     public Container addPointTo(Container container, boolean axis) {
+        // if self value is bigger than container value, set container as previous of self
         if (getPointValue(axis) > container.getPointValue(axis)) {
             setPrev(container, axis);
             container.setNext(this, axis);
             return container;
         } else {
-            if (getNext(axis) != null) {
-                Container curr = getNext(axis).addPointTo(container, axis);
+            if (getNext(axis) != null) { // if is there a next element
+                Container curr = getNext(axis).addPointTo(container, axis); // get the correct next for self
                 setNext(curr, axis);
                 curr.setPrev(this, axis);
-            } else {
+            } else { // if reached the end of the collection, set container as last element
                 setNext(container, axis);
                 container.setPrev(this, axis);
             }
@@ -74,6 +79,7 @@ public class Container {
         }
     }
 
+    // remove self from collection by connecting next and previous containers
     public void removeSelf() {
         if (prevX != null)
             prevX.setNext(nextX, true);
@@ -86,6 +92,7 @@ public class Container {
             nextY.setNext(prevY, false);
     }
 
+    // toString
     public String toString() {
         return data.toString();
     }

@@ -1,8 +1,5 @@
 import java.util.Comparator;
 
-/**
- * Created by shalev on 13/04/2017.
- */
 public class PointsComparator implements Comparator<Point> {
     private boolean axis;
 

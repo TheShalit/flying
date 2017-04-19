@@ -16,6 +16,8 @@ public class DataStructure implements DT {
         lastByY = null;
     }
 
+    // O(1)
+    // get firstByX or firstByY
     public Container getFirstByAxis(boolean axis) {
         if (axis)
             return firstByX;
@@ -23,6 +25,8 @@ public class DataStructure implements DT {
             return firstByY;
     }
 
+    // O(1)
+    // get lastByX or lastByY
     public Container getLastByAxis(boolean axis) {
         if (axis)
             return lastByX;
@@ -30,6 +34,8 @@ public class DataStructure implements DT {
             return lastByY;
     }
 
+    // O(1)
+    // set firstByX or firstByY
     public void setFirstByAxis(Container first, boolean axis) {
         if (axis)
             firstByX = first;
@@ -37,6 +43,8 @@ public class DataStructure implements DT {
             firstByY = first;
     }
 
+    // O(1)
+    // set lastByX or lastByY
     public void setLastByAxis(Container last, boolean axis) {
         if (axis)
             lastByX = last;
@@ -44,51 +52,61 @@ public class DataStructure implements DT {
             lastByY = last;
     }
 
+    // O(n)
+    // add point to the ordered place in collection(by x and y)
     public void addPoint(Point point) {
         Container newPoint = new Container(point);
 
-        if (isEmpty()) {
+        if (isEmpty()) { // if it is the first element
             firstByX = newPoint;
             lastByX = newPoint;
             firstByY = newPoint;
             lastByY = newPoint;
         } else {
-            firstByX = firstByX.addPointTo(newPoint, true);
-            if (newPoint.getNext(true) == null)
+            // set first by recursively function addPointTo that adds point the correct place for X axis
+            firstByX = firstByX.addPointTo(newPoint, true); // set first by recursively function addPointTo that adds point the correct place
+            if (newPoint.getNext(true) == null) // the new Point has no next, its because it is the last point
                 lastByX = newPoint;
 
+            // set first by recursively function addPointTo that adds point the correct place for Y axis
             firstByY = firstByY.addPointTo(newPoint, false);
-            if (newPoint.getNext(false) == null)
+            if (newPoint.getNext(false) == null) // the new Point has no next, its because it is the last point
                 lastByY = newPoint;
         }
 
-        size++;
+        size++; // increase size
     }
 
+    // O(1)
+    // return if no elements in collection
     public boolean isEmpty() {
         return firstByX == null;
     }
 
+    // O(n)
+    // return number of points from min to max by axis
     private int countPointsInRange(int min, int max, boolean axis) {
-        int sum = 0;
+        int counter = 0;
         Container curr = getFirstByAxis(axis);
 
         while (curr != null && curr.getPointValue(axis) <= max) {
-            if (curr.getPointValue(axis) >= min & curr.getPointValue(axis) <= max)
-                sum++;
+            if (curr.getPointValue(axis) >= min)
+                counter++;
             curr = curr.getNext(axis);
         }
 
-        return sum;
+        return counter;
     }
 
+    // O(n)
+    // return points from min to max by axis
     public Point[] getPointsInRangeRegAxis(int min, int max, Boolean axis) {
         Point[] output = new Point[countPointsInRange(min, max, axis)];
         Container curr = getFirstByAxis(axis);
         int index = 0;
 
-        while (curr != null && curr.getPointValue(axis) <= max) {
-            if (curr.getPointValue(axis) >= min & curr.getPointValue(axis) <= max)
+        while (curr != null && curr.getPointValue(axis) <= max) { // while the point is smaller than max
+            if (curr.getPointValue(axis) >= min)
                 output[index++] = curr.getData();
 
             curr = curr.getNext(axis);
@@ -97,7 +115,8 @@ public class DataStructure implements DT {
         return output;
     }
 
-    @Override
+    // O(n)
+    // return points from min to max by axis ordered by opposite axis
     public Point[] getPointsInRangeOppAxis(int min, int max, Boolean axis) {
         Point[] output = new Point[countPointsInRange(min, max, axis)];
         Container curr = getFirstByAxis(!axis);
@@ -112,14 +131,16 @@ public class DataStructure implements DT {
         return output;
     }
 
-    @Override
+    // O(1)
+    // size / ((max(x) - min(x)) * (max(y) - min(y)))
     public double getDensity() {
         return size /
                 ((lastByX.getPointValue(true) - firstByX.getPointValue(true)) *
                         (lastByY.getPointValue(false) - firstByY.getPointValue(false)));
     }
 
-    @Override
+    // O(|A|) - A = removed points
+    // removes points that smaller than min or bigger than max
     public void narrowRange(int min, int max, Boolean axis) {
         int counter = 0;
 
@@ -143,9 +164,11 @@ public class DataStructure implements DT {
         }
         setLastByAxis(curr, axis);
 
-        size -= counter;
+        size -= counter; // subtract deleted points from size
     }
 
+    // O(1)
+    // update first and last
     public void updatePositions(Container container, boolean axis) {
         if (container.equals(getFirstByAxis(axis)))
             setFirstByAxis(container.getNext(axis), axis);
@@ -154,13 +177,15 @@ public class DataStructure implements DT {
             setLastByAxis(container.getPrev(axis), axis);
     }
 
-    @Override
+    // O(1)
+    // return the axis with largest axis distance between max and min points
     public Boolean getLargestAxis() {
         return (lastByX.getPointValue(true) - firstByX.getPointValue(true)) >
                 (lastByY.getPointValue(false) - firstByY.getPointValue(false));
     }
 
-    @Override
+    // O(n)
+    // returns the container in the middle of the axis
     public Container getMedian(Boolean axis) {
         Container curr = getFirstByAxis(axis);
         for (int i = 0; i < size / 2; i++)
@@ -169,6 +194,8 @@ public class DataStructure implements DT {
         return curr;
     }
 
+    // O(k) - k = number of points from container to container with less-equals max value
+    // returns number of points from container to container with less-equals max value
     private int numOfPointsTillMax(Container container, int max, Boolean axis) {
         int counter = 0;
         while (container != null && container.getPointValue(axis) <= max) {
@@ -178,6 +205,8 @@ public class DataStructure implements DT {
         return counter;
     }
 
+    // O(k) - k = number of points from container to container with bigger-equals min value
+    // returns number of points from container to container with less-equals min value
     private int numOfPointsTillMin(Container container, int min, Boolean axis) {
         int counter = 0;
         while (container != null && container.getPointValue(axis) >= min) {
@@ -187,7 +216,7 @@ public class DataStructure implements DT {
         return counter;
     }
 
-    @Override
+    // O(min(|B|log|B|, n) - B = number of points in strip
     public Point[] nearestPairInStrip(Container container, double width,
                                       Boolean axis) {
         int minAxis = (int) (container.getPointValue(axis) - width);
@@ -219,7 +248,7 @@ public class DataStructure implements DT {
         double distance;
 
         for (int i = 0; i < points.length; i++) {
-            for (int j = i + 1; j < Math.min(i + 6, points.length - i); j++) {
+            for (int j = i + 1; j < Math.min(i + 7, points.length - i); j++) {
                 distance = getDistance(points[i], points[j]);
 
                 if (distance < shortestDistance) {
@@ -268,6 +297,8 @@ public class DataStructure implements DT {
         }
     }
 
+    // O(|C|) - C = points from @fromCont to @toCont
+    // get the median container from @fromCont to @toCont
     private Container getMedian(Container fromCont, Container toCont, boolean axis) {
         while (!fromCont.equals(toCont) & !fromCont.getNext(axis).equals(toCont)) {
             fromCont = fromCont.getNext(axis);
@@ -276,6 +307,8 @@ public class DataStructure implements DT {
         return fromCont;
     }
 
+    // O(1)
+    // return |sqrt(power(x-x) + power(y-y))|
     private static double getDistance(Point point1, Point point2) {
         return Math.abs(Math.sqrt(Math.pow(point2.getX() - point1.getX(), 2) + Math.pow(point2.getY() - point1.getY(), 2)));
     }
