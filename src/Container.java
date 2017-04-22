@@ -87,9 +87,9 @@ public class Container {
             prevY.setNext(nextY, false);
 
         if (nextX != null)
-            nextX.setNext(prevX, true);
+            nextX.setPrev(prevX, true);
         if (nextY != null)
-            nextY.setNext(prevY, false);
+            nextY.setPrev(prevY, false);
     }
 
     // toString

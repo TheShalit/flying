@@ -139,7 +139,7 @@ public class DataStructure implements DT {
                         (lastByY.getPointValue(false) - firstByY.getPointValue(false)));
     }
 
-    // O(|A|) - A = removed points
+    // O(|A|) -> A = removed points
     // removes points that smaller than min or bigger than max
     public void narrowRange(int min, int max, Boolean axis) {
         int counter = 0;
@@ -194,7 +194,7 @@ public class DataStructure implements DT {
         return curr;
     }
 
-    // O(k) - k = number of points from container to container with less-equals max value
+    // O(k) -> k = number of points from container to container with less-equals max value
     // returns number of points from container to container with less-equals max value
     private int numOfPointsTillMax(Container container, int max, Boolean axis) {
         int counter = 0;
@@ -205,7 +205,7 @@ public class DataStructure implements DT {
         return counter;
     }
 
-    // O(k) - k = number of points from container to container with bigger-equals min value
+    // O(k) -> k = number of points from container to container with bigger-equals min value
     // returns number of points from container to container with less-equals min value
     private int numOfPointsTillMin(Container container, int min, Boolean axis) {
         int counter = 0;
@@ -216,7 +216,7 @@ public class DataStructure implements DT {
         return counter;
     }
 
-    // O(min(|B|log|B|, n) - B = number of points in strip
+    // O(min(|B|log|B|, n) -> B = number of points in strip
     public Point[] nearestPairInStrip(Container container, double width,
                                       Boolean axis) {
         int minAxis = (int) (container.getPointValue(axis) - width);
@@ -264,12 +264,15 @@ public class DataStructure implements DT {
             return result;
     }
 
-    @Override
+    // O(nlogn)
+    // return two closest points
     public Point[] nearestPair() {
         boolean axis = getLargestAxis();
         return nearestPair(getFirstByAxis(axis), getLastByAxis(axis), axis);
     }
 
+    // O(nlogn)
+    // return recursively two closest points from @fromCont to @toCont in the @axis
     private Point[] nearestPair(Container fromCont, Container toCont, boolean axis) {
         if (fromCont.equals(toCont))
             return new Point[]{};
@@ -277,20 +280,24 @@ public class DataStructure implements DT {
             return new Point[]{fromCont.getData(), toCont.getData()};
         else {
             Container median = getMedian(fromCont, toCont, axis);
+            // recursively nearestPair from middle(included) to @toCont
             Point[] nearestRight = nearestPair(median, toCont, axis);
+            // recursively nearestPair from @fromCont  to middle(not included)
             Point[] nearestLeft = nearestPair(fromCont, median.getPrev(axis), axis);
-            double rightDist = Double.POSITIVE_INFINITY;
-            double leftDist = Double.POSITIVE_INFINITY;
-            if (nearestRight.length == 2)
+            double rightDist = Double.POSITIVE_INFINITY; // set default to infinity for less than 2 points
+            double leftDist = Double.POSITIVE_INFINITY; // set default to infinity for less than 2 points
+            if (nearestRight.length == 2) // if at least two points, calculate distance
                 rightDist = getDistance(nearestRight[0], nearestRight[1]);
-            if (nearestLeft.length == 2)
+            if (nearestLeft.length == 2) // if at least two points, calculate distance
                 leftDist = getDistance(nearestLeft[0], nearestLeft[1]);
 
-            double minDist = Math.min(rightDist, leftDist);
+            double minDist = Math.min(rightDist, leftDist); // minimum distance from left and right
+            // call nearestPairInStrip in 2 * minDist strip
             Point[] nearestInStrip = nearestPairInStrip(median, 2 * minDist, axis);
+            // if found return it
             if (nearestInStrip.length == 2 && getDistance(nearestInStrip[0], nearestInStrip[1]) < minDist)
                 return nearestInStrip;
-            else if (minDist == rightDist)
+            else if (minDist == rightDist) // else return minimum from left and right
                 return nearestRight;
             else
                 return nearestLeft;

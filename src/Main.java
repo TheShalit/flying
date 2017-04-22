@@ -6,89 +6,89 @@ import java.util.Comparator;
 import java.util.Vector;
 
 
-
 public class Main {
 
-	public static void main(String[] args) 
-	{
-		testA();
-		testB();
-		testC();
-	}
-
-
-    private static double distance(Point p1, Point p2)
-    {
-        return Math.sqrt( Math.pow(p1.getX()-p2.getX(),2)    +Math.pow(p1.getY()-p2.getY(),2)    );
+    public static void main(String[] args) {
+        testA();
+        testB();
+        testC();
     }
 
 
-	private static void testA()
-	{
-		PointCompareX comparatorX = new PointCompareX();
-		PointCompareY comparatorY = new PointCompareY();
-		int testCounter=0;
-		Point[] points = {
-				new Point(0, 0), 
-				new Point(1, 1),
-				new Point(4, 2),
-				new Point(3, 3),
-				new Point(2, 4),
-				};
-		
-		
-		
-		DT dt=new DataStructure();
-		for (int i=0;i<points.length;i++)
-			dt.addPoint(points[i]);
-		String testName;
-		int expected;
-		int result;
-		//0
-		testName = "A"+testCounter;testCounter++;
-		testExpectedPoints(testName, points, dt.getPointsInRangeRegAxis(-1, 6, false));
-		//1
-		testName = "A"+testCounter;testCounter++;
-		testExpectedPoints(testName, points, dt.getPointsInRangeOppAxis(-1, 6, true));
-		//2
-		Arrays.sort(points,comparatorX);
-		testName = "A"+testCounter;testCounter++;
-		testExpectedPoints(testName, points, dt.getPointsInRangeRegAxis(-1, 6, true));
-		//3
-		testName = "A"+testCounter;testCounter++;
-		testExpectedPoints(testName, points, dt.getPointsInRangeOppAxis(-1, 6, false));
+    private static double distance(Point p1, Point p2) {
+        return Math.sqrt(Math.pow(p1.getX() - p2.getX(), 2) + Math.pow(p1.getY() - p2.getY(), 2));
+    }
+
+
+    private static void testA() {
+        PointCompareX comparatorX = new PointCompareX();
+        PointCompareY comparatorY = new PointCompareY();
+        int testCounter = 0;
+        Point[] points = {
+                new Point(0, 0),
+                new Point(1, 1),
+                new Point(4, 2),
+                new Point(3, 3),
+                new Point(2, 4),
+        };
+
+
+        DT dt = new DataStructure();
+        for (int i = 0; i < points.length; i++)
+            dt.addPoint(points[i]);
+        String testName;
+        int expected;
+        int result;
+        //0
+        testName = "A" + testCounter;
+        testCounter++;
+        testExpectedPoints(testName, points, dt.getPointsInRangeRegAxis(-1, 6, false));
+        //1
+        testName = "A" + testCounter;
+        testCounter++;
+        testExpectedPoints(testName, points, dt.getPointsInRangeOppAxis(-1, 6, true));
+        //2
+        Arrays.sort(points, comparatorX);
+        testName = "A" + testCounter;
+        testCounter++;
+        testExpectedPoints(testName, points, dt.getPointsInRangeRegAxis(-1, 6, true));
+        //3
+        testName = "A" + testCounter;
+        testCounter++;
+        testExpectedPoints(testName, points, dt.getPointsInRangeOppAxis(-1, 6, false));
         //4
-		testName = "A"+testCounter;testCounter++;		
-		Point[] expectedPoints = 
-			{
-				new Point(3, 3),
-				new Point(2, 4),
-			};
-		testExpectedPoints(testName, expectedPoints, dt.getPointsInRangeRegAxis(3, 7, false));
-		
-		Arrays.sort(expectedPoints,comparatorX);
-		testName = "A"+testCounter;testCounter++;
-		testExpectedPoints(testName, expectedPoints, dt.getPointsInRangeOppAxis(3, 7, false));
-		
-		testName = "A"+testCounter;testCounter++;		
-		Point[] expectedPoints2 = 
-			{
-				new Point(4, 2),
-				new Point(3, 3),
-				
-			};
-		testExpectedPoints(testName, expectedPoints2, dt.getPointsInRangeOppAxis(3, 7, true));
-		
-		Arrays.sort(expectedPoints2,comparatorX);
-		testName = "A"+testCounter;testCounter++;
-		testExpectedPoints(testName, expectedPoints2, dt.getPointsInRangeRegAxis(3, 7, true));
-	}
+        testName = "A" + testCounter;
+        testCounter++;
+        Point[] expectedPoints =
+                {
+                        new Point(3, 3),
+                        new Point(2, 4),
+                };
+        testExpectedPoints(testName, expectedPoints, dt.getPointsInRangeRegAxis(3, 7, false));
+
+        Arrays.sort(expectedPoints, comparatorX);
+        testName = "A" + testCounter;
+        testCounter++;
+        testExpectedPoints(testName, expectedPoints, dt.getPointsInRangeOppAxis(3, 7, false));
+
+        testName = "A" + testCounter;
+        testCounter++;
+        Point[] expectedPoints2 =
+                {
+                        new Point(4, 2),
+                        new Point(3, 3),
+
+                };
+        testExpectedPoints(testName, expectedPoints2, dt.getPointsInRangeOppAxis(3, 7, true));
+
+        Arrays.sort(expectedPoints2, comparatorX);
+        testName = "A" + testCounter;
+        testCounter++;
+        testExpectedPoints(testName, expectedPoints2, dt.getPointsInRangeRegAxis(3, 7, true));
+    }
 
 
-	
-
-    private static Point[] generatePointsForTestCaseB()
-    {
+    private static Point[] generatePointsForTestCaseB() {
         Point[] points = {
 
                 new Point(186, 172),
@@ -1096,186 +1096,220 @@ public class Main {
         return points;
     }
 
-    private  static void testB()
-    {
+    private static void testB() {
         Point[] points = generatePointsForTestCaseB();
 
         PointCompareX comparatorX = new PointCompareX();
         PointCompareY comparatorY = new PointCompareY();
-        int testCounter=0;
+        int testCounter = 0;
 
-        DT dt=new DataStructure();
-        for (int i=0;i<points.length;i++) 
-	{
+        DT dt = new DataStructure();
+        for (int i = 0; i < points.length; i++) {
             dt.addPoint(points[i]);
         }
         String testName;
         int expected;
         int result;
         //0
-        testName = "B"+testCounter;testCounter++;
-        Arrays.sort(points,comparatorY);
+        testName = "B" + testCounter;
+        testCounter++;
+        Arrays.sort(points, comparatorY);
         testExpectedPoints(testName, points, dt.getPointsInRangeRegAxis(0, 1000, false));
 
         //1
-        Arrays.sort(points,comparatorY);
-        testName = "B"+testCounter;testCounter++;
+        Arrays.sort(points, comparatorY);
+        testName = "B" + testCounter;
+        testCounter++;
         testExpectedPoints(testName, points, dt.getPointsInRangeOppAxis(0, 1000, true));
 
         //2
-        Arrays.sort(points,comparatorX);
-        testName = "B"+testCounter;testCounter++;
+        Arrays.sort(points, comparatorX);
+        testName = "B" + testCounter;
+        testCounter++;
         testExpectedPoints(testName, points, dt.getPointsInRangeRegAxis(-1, 1000, true));
         //3
-        Arrays.sort(points,comparatorX);
-        testName = "B"+testCounter;testCounter++;
+        Arrays.sort(points, comparatorX);
+        testName = "B" + testCounter;
+        testCounter++;
         testExpectedPoints(testName, points, dt.getPointsInRangeOppAxis(0, 1000, false));
 
 
         //4
         Point[] resPoints = dt.nearestPair();
-        double resultD = distance(resPoints[0],resPoints[1]);
-        testName = "B"+testCounter;testCounter++;
+        double resultD = distance(resPoints[0], resPoints[1]);
+        testName = "B" + testCounter;
+        testCounter++;
 
-        if(resultD<7.1)
-            System.out.println("Test "+ testName+": passed :)");
+        if (resultD < 7.1)
+            System.out.println("Test " + testName + ": passed :)");
         else
-            System.out.println("Test "+ testName+": failed :)");
-        testName = "B"+testCounter;testCounter++;
-        if(dt.getDensity()<0.002)
-            System.out.println("Test "+ testName+": passed :)");
+            System.out.println("Test " + testName + ": failed :)");
+        testName = "B" + testCounter;
+        testCounter++;
+        if (dt.getDensity() < 0.002)
+            System.out.println("Test " + testName + ": passed :)");
         else
-            System.out.println("Test "+ testName+": failed :)");
-        testName = "B"+testCounter;testCounter++;
-        testExpectedPoints(testName, new Point[]{new Point(500,734)}, new Point[]{dt.getMedian(true).getData()});
-        testName = "B"+testCounter;testCounter++;
-        testExpectedPoints(testName, new Point[]{new Point(34,500)}, new Point[]{dt.getMedian(false).getData()});
+            System.out.println("Test " + testName + ": failed :)");
+        testName = "B" + testCounter;
+        testCounter++;
+        testExpectedPoints(testName, new Point[]{new Point(500, 734)}, new Point[]{dt.getMedian(true).getData()});
+        testName = "B" + testCounter;
+        testCounter++;
+        testExpectedPoints(testName, new Point[]{new Point(34, 500)}, new Point[]{dt.getMedian(false).getData()});
 
         //3
 
     }
 
 
+    private static void testC() {
+        // Container#addPointTo
+        Point firstPoint = new Point(1, 1);
+        Container firstCont = new Container(firstPoint);
 
-    private static void testC() 
-	{
-	//Add your own tests here
-    	}
+        Point newPoint = new Point(0, 2);
+        Container newCont = new Container(newPoint);
+
+        Container result = firstCont.addPointTo(newCont, false);
+        testExpected("C1", result, firstCont);
+
+        result = firstCont.addPointTo(newCont, true);
+        testExpected("C2", result, newPoint);
+
+        // Container#removeSelf
+        Point[] points = new Point[3];
+        Container[] containers = new Container[3];
+        for (int i = 0; i < 3; i++) {
+            points[i] = new Point(i, i);
+            containers[i] = new Container(points[i]);
+        }
+        containers[0].setNext(containers[1], true);
+        containers[1].setNext(containers[2], true);
+        containers[2].setPrev(containers[1], true);
+        containers[1].setPrev(containers[0], true);
+
+        Point[] actual = getPointsFrom(containers[0], 3);
+
+        testExpectedPoints("C3", points, actual);
+
+        containers[1].removeSelf();
+        actual = getPointsFrom(containers[0], 2);
+
+        testExpectedPoints("C4", new Point[]{points[0], points[2]}, actual);
+    }
+
+    public static Point[] getPointsFrom(Container container, int size) {
+        Point[] points = new Point[size];
+        points[0] = container.getData();
+        int idx = 1;
+        while (container.getNext(true) != null) {
+            container = container.getNext(true);
+            points[idx++] = container.getData();
+        }
+
+        return points;
+    }
+
+    public static class PointCompareY implements Comparator<Point> {
+
+        @Override
+        public int compare(Point point1, Point point2) {
+            if (point1.getY() < point2.getY()) return -1;
+            return 1;
+        }
+
+    }
+
+    public static class PointCompareX implements Comparator<Point> {
+
+        @Override
+        public int compare(Point point1, Point point2) {
+            if (point1.getX() < point2.getX()) return -1;
+            return 1;
+        }
 
 
-    public static class PointCompareY implements Comparator<Point>
-	 {
+    }
 
-		@Override
-		public int compare(Point point1, Point point2) 
-		{
-			if (point1.getY()<point2.getY()) return -1;
-			return 1;
-		}
-		 
-	 }
-	
-	public static class PointCompareX implements Comparator<Point>
-	 {
 
-		@Override
-		public int compare(Point point1, Point point2) 
-		{
-			if (point1.getX()<point2.getX()) return -1;
-			return 1;
-		}
-		
-		 
-	 }
-		
-	
-	private static <T> void testExpected(String testName, T expected, T actual) 
-	{
-		if (!actual.equals(expected)) {
-			System.out.println("Test " +testName+ ": wrong!\n expected=" + expected + ",\n actual=  " + actual);
-		} else {
-			System.out.println("Test " +testName+ ": passed :)");
-		}
-		
-	}
-	
-	private static void testExpectedPoints(String testName, Point[] expectedPoints,	Point[] actualPoints) 
-	{
-		if (!equalAsLists(actualPoints,expectedPoints)) {
-			if (equalAsSets(actualPoints,expectedPoints))
-				System.out.println("Test " +testName+ ": order wrong!\n expected=" + Arrays.toString(expectedPoints) + ",\n actual=  " + Arrays.toString(actualPoints));
-			else
-				System.out.println("Test " +testName+ ": wrong!\n expected=" + Arrays.toString(expectedPoints) + ",\n actual=  " + Arrays.toString(actualPoints));
-		} else {
-			System.out.println("Test " +testName+ ": passed :)");
-		}
-	}
+    private static <T> void testExpected(String testName, T expected, T actual) {
+        if (!actual.equals(expected)) {
+            System.out.println("Test " + testName + ": wrong!\n expected=" + expected + ",\n actual=  " + actual);
+        } else {
+            System.out.println("Test " + testName + ": passed :)");
+        }
+
+    }
+
+    private static void testExpectedPoints(String testName, Point[] expectedPoints, Point[] actualPoints) {
+        if (!equalAsLists(actualPoints, expectedPoints)) {
+            if (equalAsSets(actualPoints, expectedPoints))
+                System.out.println("Test " + testName + ": order wrong!\n expected=" + Arrays.toString(expectedPoints) + ",\n actual=  " + Arrays.toString(actualPoints));
+            else
+                System.out.println("Test " + testName + ": wrong!\n expected=" + Arrays.toString(expectedPoints) + ",\n actual=  " + Arrays.toString(actualPoints));
+        } else {
+            System.out.println("Test " + testName + ": passed :)");
+        }
+    }
 
 
     //checks (inefficiently) that the sets are equal
-	//NOTE: if one of the sets contains 2 points with same coordinates, might return erroneous result 
-	private static boolean equalAsSets(Point[] actualPoints, Point[] expectedPoints) 
-	{
-		if (actualPoints.length!=expectedPoints.length) return false;
-		for (int i=0;i<expectedPoints.length;i++)
-		{
-			boolean exists=false;
-			for (int j=0;j<actualPoints.length;j++)
-			{ 
-				if (expectedPoints[i].equals(actualPoints[j])) exists=true;
-			}
-			if (!exists) return false;
-		}
-		return true;
-	}
+    //NOTE: if one of the sets contains 2 points with same coordinates, might return erroneous result
+    private static boolean equalAsSets(Point[] actualPoints, Point[] expectedPoints) {
+        if (actualPoints.length != expectedPoints.length) return false;
+        for (int i = 0; i < expectedPoints.length; i++) {
+            boolean exists = false;
+            for (int j = 0; j < actualPoints.length; j++) {
+                if (expectedPoints[i].equals(actualPoints[j])) exists = true;
+            }
+            if (!exists) return false;
+        }
+        return true;
+    }
 
-	//checks that the 2 lists of points are equal (order counts)
-	private static boolean equalAsLists(Point[] actualPoints, Point[] expectedPoints) 
-	{
-		if (actualPoints.length!=expectedPoints.length) return false;
-		for (int i=0;i<expectedPoints.length;i++)
-		{
-			if (!actualPoints[i].equals(expectedPoints[i])) return false;
-		}
-		return true;
-	}
+    //checks that the 2 lists of points are equal (order counts)
+    private static boolean equalAsLists(Point[] actualPoints, Point[] expectedPoints) {
+        if (actualPoints.length != expectedPoints.length) return false;
+        for (int i = 0; i < expectedPoints.length; i++) {
+            if (!actualPoints[i].equals(expectedPoints[i])) return false;
+        }
+        return true;
+    }
 
-	//reading points from a file
-	private static Point[] readPointsFile(String fileName) 
-	{
-		Vector<Point> points = new Vector<Point>();;
-		BufferedReader input;
-		FileReader fileReader;
-		
-		try {
-			fileReader = new FileReader(fileName);
-			input = new BufferedReader(fileReader);
-			String line = null;
-			String name;
-			int x, y;
+    //reading points from a file
+    private static Point[] readPointsFile(String fileName) {
+        Vector<Point> points = new Vector<Point>();
+        ;
+        BufferedReader input;
+        FileReader fileReader;
 
-			while ((line = input.readLine()) != null) {
-				String[] lineArray = line.split(";");
-				name = lineArray[0];
-				x = Integer.parseInt(lineArray[1]);
-				y = Integer.parseInt(lineArray[2]);
+        try {
+            fileReader = new FileReader(fileName);
+            input = new BufferedReader(fileReader);
+            String line = null;
+            String name;
+            int x, y;
 
-				Point p = new Point(x, y, name);
-				points.add(p);
-			}
-			input.close();
-			fileReader.close();
-		}
-		catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+            while ((line = input.readLine()) != null) {
+                String[] lineArray = line.split(";");
+                name = lineArray[0];
+                x = Integer.parseInt(lineArray[1]);
+                y = Integer.parseInt(lineArray[2]);
 
-		Point[] result = new Point[points.size()];
-		points.toArray(result);
-		return result;
-	}
+                Point p = new Point(x, y, name);
+                points.add(p);
+            }
+            input.close();
+            fileReader.close();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        Point[] result = new Point[points.size()];
+        points.toArray(result);
+        return result;
+    }
 
 }
