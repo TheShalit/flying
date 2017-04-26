@@ -43,6 +43,20 @@ public class Container {
             prevY = prev;
     }
 
+    public static void setNextAndPrev(Container next, Container prev, boolean axis) {
+        if (axis) {
+            if (next != null)
+                next.prevX = prev;
+            if (prev != null)
+                prev.nextX = next;
+        } else {
+            if (next != null)
+                next.prevY = prev;
+            if (prev != null)
+                prev.nextY = next;
+        }
+    }
+
     // get next by axis
     public Container getNext(boolean axis) {
         if (axis)
@@ -77,6 +91,50 @@ public class Container {
             }
             return this;
         }
+    }
+
+    public Container setNextByMedian(Container median, boolean axis) {
+        if (getNext(!axis) == null){
+            if (getPointValue(axis) < median.getPointValue(axis))
+                return this;
+            else
+                return null;
+        }
+
+        if (getPointValue(axis) < median.getPointValue(axis)) {
+            setNextAndPrev(getNext(!axis).setNextByMedian(median, axis), this, !axis);
+            return this;
+        } else {
+            return getNext(!axis).setNextByMedian(median, axis);
+        }
+    }
+
+    public Container setPrevByMedian(Container median, boolean axis) {
+        if (getPrev(!axis) == null){
+            if (getPointValue(axis) >= median.getPointValue(axis))
+                return this;
+            else
+                return null;
+        }
+
+        if (getPointValue(axis) >= median.getPointValue(axis)) {
+            setNextAndPrev(this, getPrev(!axis).setPrevByMedian(median, axis), !axis);
+            return this;
+        } else {
+            return getPrev(!axis).setPrevByMedian(median, axis);
+        }
+    }
+
+    public Container getLastByAxis(boolean axis) {
+        if (getNext(axis) == null)
+            return this;
+        return getNext(axis).getLastByAxis(axis);
+    }
+
+    public Container getFirstByAxis(boolean axis) {
+        if (getPrev(axis) == null)
+            return this;
+        return getPrev(axis).getFirstByAxis(axis);
     }
 
     // remove self from collection by connecting next and previous containers

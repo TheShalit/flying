@@ -306,12 +306,45 @@ public class DataStructure implements DT {
         }
     }
 
-    private void printSides(Container fromCont, Container toCont, boolean axis) {
-        while (!fromCont.equals(toCont)) {
-            System.out.print(fromCont.getData() + ", ");
-            fromCont = fromCont.getNext(axis);
+    // O(n)
+    public DataStructure[] split(boolean axis) {
+        Container median = getMedian(axis);
+
+        DataStructure leftDS = new DataStructure();
+        DataStructure rightDS = new DataStructure();
+
+        leftDS.setFirstByAxis(getFirstByAxis(axis), axis);
+        leftDS.setLastByAxis(median.getPrev(axis), axis);
+        rightDS.setFirstByAxis(median, axis);
+        rightDS.setLastByAxis(getLastByAxis(axis), axis);
+
+        leftDS.setFirstByAxis(getFirstByAxis(!axis).setNextByMedian(median, axis), !axis);
+        leftDS.setLastByAxis(leftDS.getFirstByAxis(!axis).getLastByAxis(!axis), !axis);
+        rightDS.setLastByAxis(getLastByAxis(!axis).setPrevByMedian(median, axis), !axis);
+        rightDS.setFirstByAxis(rightDS.getLastByAxis(!axis).getFirstByAxis(!axis), !axis);
+
+        median.getPrev(axis).setNext(null, axis);
+        median.setPrev(null, axis);
+
+        return new DataStructure[]{leftDS, rightDS};
+    }
+
+    public void printSides(boolean axis) {
+        Container fromCont = getFirstByAxis(axis);
+        Container toCont = getLastByAxis(axis);
+        Container curr = fromCont;
+        while (curr != null && !curr.equals(toCont)) {
+            System.out.print(curr + "->" + curr.getNext(axis) + ", ");
+            curr = curr.getNext(axis);
         }
-        System.out.println(toCont.getData());
+        System.out.println(toCont + "->null");
+
+        curr = toCont;
+        while (curr != null && !curr.equals(fromCont)) {
+            System.out.print(curr + "<-" + curr.getPrev(axis) + ", ");
+            curr = curr.getPrev(axis);
+        }
+        System.out.println(fromCont + "<-null");
     }
 
     // O(|C|) - C = points from @fromCont to @toCont
