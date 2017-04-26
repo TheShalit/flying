@@ -233,24 +233,24 @@ public class DataStructure implements DT {
 
             int idx = 0;
             Container curr = container;
-            while (curr != null && curr.getPointValue(axis) < maxAxis) {
+            while (curr != null && curr.getPointValue(axis) <= maxAxis) {
                 points[idx++] = curr.getData();
                 curr = curr.getNext(axis);
             }
             curr = container.getPrev(axis);
-            while (curr != null && curr.getPointValue(axis) > minAxis) {
+            while (curr != null && curr.getPointValue(axis) >= minAxis) {
                 points[idx++] = curr.getData();
                 curr = curr.getPrev(axis);
             }
 
-            Arrays.sort(points, 0, points.length - 1, new PointsComparator(axis));
+            Arrays.sort(points, 0, points.length, new PointsComparator(axis));
         }
         Point[] result = new Point[2];
         double shortestDistance = Double.POSITIVE_INFINITY;
         double distance;
 
         for (int i = 0; i < points.length; i++) {
-            for (int j = i + 1; j < Math.min(i + 7, points.length - i); j++) {
+            for (int j = i + 1; j < Math.min(i + 7, points.length); j++) {
                 distance = getDistance(points[i], points[j]);
 
                 if (distance < shortestDistance) {
@@ -304,6 +304,14 @@ public class DataStructure implements DT {
             else
                 return nearestLeft;
         }
+    }
+
+    private void printSides(Container fromCont, Container toCont, boolean axis) {
+        while (!fromCont.equals(toCont)) {
+            System.out.print(fromCont.getData() + ", ");
+            fromCont = fromCont.getNext(axis);
+        }
+        System.out.println(toCont.getData());
     }
 
     // O(|C|) - C = points from @fromCont to @toCont
