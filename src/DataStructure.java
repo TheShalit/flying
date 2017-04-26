@@ -315,6 +315,56 @@ public class DataStructure implements DT {
         }
         return fromCont;
     }
+    public DataStructure  copyDataStructure()  {
+        DataStructure dl = new DataStructure();
+        Container firstCont = new Container(this.firstByX.getData());
+        dl.firstByX = firstCont;
+        firstByX.setCopyTemp(firstCont);
+
+
+        Container otherCurr = firstByX.getNext(true);
+        Container myCurr = firstCont;
+        while(otherCurr!=null){
+            myCurr.setNext(new Container(otherCurr.getData()),true);
+            myCurr.getNext(true).setPrev(myCurr,true);
+            otherCurr.setCopyTemp(myCurr.getNext(true));
+            myCurr = myCurr.getNext(true);
+            otherCurr = otherCurr.getNext(true);
+        }
+        otherCurr = this.firstByX;
+        myCurr = dl.firstByX;
+        while(otherCurr!=null){
+            if ((otherCurr.getNext(false)!=null))
+            otherCurr.getCopyTemp().setNext(otherCurr.getNext(false).getCopyTemp(),false);
+            if ((otherCurr.getPrev(false)!=null))
+            otherCurr.getCopyTemp().setPrev(otherCurr.getPrev(false).getCopyTemp(),false);
+
+            otherCurr = otherCurr.getNext(false);
+        }
+        dl.firstByY = firstByY.getCopyTemp();
+        dl.lastByX = lastByX.getCopyTemp();
+        dl.firstByY = lastByY.getCopyTemp();
+        while(otherCurr!=null){
+            otherCurr.setCopyTemp(null);
+            otherCurr = otherCurr.getNext(true);
+        }
+        return dl;
+    }
+    public void printSides(Container fromCont, Container toCont, boolean axis) {
+        Container curr = fromCont;
+        while (!curr.equals(toCont)) {
+            System.out.print(curr + "->" + curr.getNext(axis) + ", ");
+            curr = curr.getNext(axis);
+        }
+        System.out.println(toCont + "->null");
+
+        curr = toCont;
+        while (!curr.equals(fromCont)) {
+            System.out.print(curr + "<-" + curr.getPrev(axis) + ", ");
+            curr = curr.getPrev(axis);
+        }
+        System.out.println(fromCont + "<-null");
+    }
 
     // O(1)
     // return sqrt(power(x-x) + power(y-y))

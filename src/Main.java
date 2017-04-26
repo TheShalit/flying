@@ -9,9 +9,10 @@ import java.util.Vector;
 public class Main {
 
     public static void main(String[] args) {
-        testA();
-        testB();
-        testC();
+       // testA();
+       // testB();
+       // testC();
+        testD();
     }
 
 
@@ -1197,6 +1198,40 @@ public class Main {
 
         testExpectedPoints("C4", new Point[]{points[0], points[2]}, actual);
     }
+	private static void testD() {
+		Point[] points = {
+				new Point(186, 172),
+				new Point(207, 180),
+				new Point(571, 907),
+				new Point(905, 567),
+				new Point(313, 105),
+				new Point(963, 821),
+				new Point(609, 410),
+				new Point(411, 686),
+				new Point(164, 1),
+				new Point(980, 340),
+				new Point(515, 286),
+				new Point(548, 23),
+				new Point(568, 707),
+				new Point(320, 406),
+				new Point(220, 726),
+				new Point(249, 740),
+				new Point(101, 769),
+				new Point(76, 77),
+				new Point(883, 909),
+				new Point(332, 588),
+		};
+		DataStructure dl = new DataStructure();
+		for (Point p : points) {
+			dl.addPoint(p);
+		}
+		DataStructure dl2 = dl.copyDataStructure();
+		dl.printSides(dl.getFirstByAxis(true),dl.getLastByAxis(true),true);
+		dl.narrowRange(0,75,true);
+		dl.printSides(dl.getFirstByAxis(true),dl.getLastByAxis(true),true);
+
+
+	}
 
     public static Point[] getPointsFrom(Container container, int size) {
         Point[] points = new Point[size];
