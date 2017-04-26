@@ -269,6 +269,11 @@ public class DataStructure implements DT {
     // O(nlogn)
     // return two closest points
     public Point[] nearestPair() {
+        Container curr = this.getFirstByAxis(true);
+        while (curr != null) {
+            System.out.println(curr.getData());
+            curr = curr.getNext(true);
+        }
         boolean axis = getLargestAxis();
         return nearestPair(getFirstByAxis(axis), getLastByAxis(axis), axis);
     }
@@ -317,9 +322,9 @@ public class DataStructure implements DT {
     }
 
     // O(1)
-    // return |sqrt(power(x-x) + power(y-y))|
+    // return sqrt(power(x-x) + power(y-y))
     private static double getDistance(Point point1, Point point2) {
-        return Math.abs(Math.sqrt(Math.pow(point2.getX() - point1.getX(), 2) + Math.pow(point2.getY() - point1.getY(), 2)));
+        return Math.sqrt(Math.pow(point2.getX() - point1.getX(), 2) + Math.pow(point2.getY() - point1.getY(), 2));
     }
 }
 
