@@ -146,9 +146,10 @@ public class DataStructure implements DT {
 
         // remove by min
         Container curr = getFirstByAxis(axis);
-        while (curr.getPointValue(axis) <= min) {
+        while (curr != null && curr.getPointValue(axis) < min) {
             counter++;
             curr.removeSelf();
+            updatePositions(curr, axis);
             updatePositions(curr, !axis);
             curr = curr.getNext(axis);
         }
@@ -156,9 +157,10 @@ public class DataStructure implements DT {
 
         // remove by max
         curr = getLastByAxis(axis);
-        while (curr.getPointValue(axis) >= max) {
+        while (curr != null && curr.getPointValue(axis) > max) {
             counter++;
             curr.removeSelf();
+            updatePositions(curr, axis);
             updatePositions(curr, !axis);
             curr = curr.getPrev(axis);
         }
