@@ -233,12 +233,12 @@ public class DataStructure implements DT {
 
             int idx = 0;
             Container curr = container;
-            while (curr != null && curr.getPointValue(axis) <= maxAxis) {
+            while (curr != null && curr.getPointValue(axis) < maxAxis) {
                 points[idx++] = curr.getData();
                 curr = curr.getNext(axis);
             }
             curr = container.getPrev(axis);
-            while (curr != null && curr.getPointValue(axis) >= minAxis) {
+            while (curr != null && curr.getPointValue(axis) > minAxis) {
                 points[idx++] = curr.getData();
                 curr = curr.getPrev(axis);
             }
@@ -269,11 +269,6 @@ public class DataStructure implements DT {
     // O(nlogn)
     // return two closest points
     public Point[] nearestPair() {
-        Container curr = this.getFirstByAxis(true);
-        while (curr != null) {
-            System.out.println(curr.getData());
-            curr = curr.getNext(true);
-        }
         boolean axis = getLargestAxis();
         return nearestPair(getFirstByAxis(axis), getLastByAxis(axis), axis);
     }
