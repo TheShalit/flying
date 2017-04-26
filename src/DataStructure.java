@@ -306,14 +306,6 @@ public class DataStructure implements DT {
         }
     }
 
-    private void printSides(Container fromCont, Container toCont, boolean axis) {
-        while (!fromCont.equals(toCont)) {
-            System.out.print(fromCont.getData() + ", ");
-            fromCont = fromCont.getNext(axis);
-        }
-        System.out.println(toCont.getData());
-    }
-
     // O(|C|) - C = points from @fromCont to @toCont
     // get the median container from @fromCont to @toCont
     private Container getMedian(Container fromCont, Container toCont, boolean axis) {
@@ -323,7 +315,8 @@ public class DataStructure implements DT {
         }
         return fromCont;
     }
-    public DataStructure  copyDataStructure()  {
+
+    public DataStructure copyDataStructure() {
         DataStructure dl = new DataStructure();
         Container firstCont = new Container(this.firstByX.getData());
         dl.firstByX = firstCont;
@@ -332,32 +325,32 @@ public class DataStructure implements DT {
 
         Container otherCurr = firstByX.getNext(true);
         Container myCurr = firstCont;
-        while(otherCurr!=null){
-            myCurr.setNext(new Container(otherCurr.getData()),true);
-            myCurr.getNext(true).setPrev(myCurr,true);
+        while (otherCurr != null) {
+            myCurr.setNext(new Container(otherCurr.getData()), true);
+            myCurr.getNext(true).setPrev(myCurr, true);
             otherCurr.setCopyTemp(myCurr.getNext(true));
             myCurr = myCurr.getNext(true);
             otherCurr = otherCurr.getNext(true);
         }
         otherCurr = this.firstByX;
-        myCurr = dl.firstByX;
-        while(otherCurr!=null){
-            if ((otherCurr.getNext(false)!=null))
-            otherCurr.getCopyTemp().setNext(otherCurr.getNext(false).getCopyTemp(),false);
-            if ((otherCurr.getPrev(false)!=null))
-            otherCurr.getCopyTemp().setPrev(otherCurr.getPrev(false).getCopyTemp(),false);
+        while (otherCurr != null) {
+            if ((otherCurr.getNext(false) != null))
+                otherCurr.getCopyTemp().setNext(otherCurr.getNext(false).getCopyTemp(), false);
+            if ((otherCurr.getPrev(false) != null))
+                otherCurr.getCopyTemp().setPrev(otherCurr.getPrev(false).getCopyTemp(), false);
 
             otherCurr = otherCurr.getNext(false);
         }
         dl.firstByY = firstByY.getCopyTemp();
         dl.lastByX = lastByX.getCopyTemp();
         dl.firstByY = lastByY.getCopyTemp();
-        while(otherCurr!=null){
+        while (otherCurr != null) {
             otherCurr.setCopyTemp(null);
             otherCurr = otherCurr.getNext(true);
         }
         return dl;
     }
+
     public void printSides(Container fromCont, Container toCont, boolean axis) {
         Container curr = fromCont;
         while (!curr.equals(toCont)) {
