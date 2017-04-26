@@ -5,6 +5,7 @@ public class Container {
     private Container prevX;
     private Container nextY;
     private Container prevY;
+    private Container copyTemp;
 
     public Container(Point point) {
         data = point;
@@ -148,6 +149,12 @@ public class Container {
             nextX.setPrev(prevX, true);
         if (nextY != null)
             nextY.setPrev(prevY, false);
+    }
+    public  void setCopyTemp(Container cont){
+        this.copyTemp = cont;
+    }
+    public Container getCopyTemp(){
+        return copyTemp;
     }
 
     // toString

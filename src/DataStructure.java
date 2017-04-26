@@ -306,6 +306,51 @@ public class DataStructure implements DT {
         }
     }
 
+    // O(|C|) - C = points from @fromCont to @toCont
+    // get the median container from @fromCont to @toCont
+    private Container getMedian(Container fromCont, Container toCont, boolean axis) {
+        while (!fromCont.equals(toCont) & !fromCont.getNext(axis).equals(toCont)) {
+            fromCont = fromCont.getNext(axis);
+            toCont = toCont.getPrev(axis);
+        }
+        return fromCont;
+    }
+
+    public DataStructure copyDataStructure() {
+        DataStructure dl = new DataStructure();
+        Container firstCont = new Container(this.firstByX.getData());
+        dl.firstByX = firstCont;
+        firstByX.setCopyTemp(firstCont);
+
+
+        Container otherCurr = firstByX.getNext(true);
+        Container myCurr = firstCont;
+        while (otherCurr != null) {
+            myCurr.setNext(new Container(otherCurr.getData()), true);
+            myCurr.getNext(true).setPrev(myCurr, true);
+            otherCurr.setCopyTemp(myCurr.getNext(true));
+            myCurr = myCurr.getNext(true);
+            otherCurr = otherCurr.getNext(true);
+        }
+        otherCurr = this.firstByX;
+        while (otherCurr != null) {
+            if ((otherCurr.getNext(false) != null))
+                otherCurr.getCopyTemp().setNext(otherCurr.getNext(false).getCopyTemp(), false);
+            if ((otherCurr.getPrev(false) != null))
+                otherCurr.getCopyTemp().setPrev(otherCurr.getPrev(false).getCopyTemp(), false);
+
+            otherCurr = otherCurr.getNext(false);
+        }
+        dl.firstByY = firstByY.getCopyTemp();
+        dl.lastByX = lastByX.getCopyTemp();
+        dl.firstByY = lastByY.getCopyTemp();
+        while (otherCurr != null) {
+            otherCurr.setCopyTemp(null);
+            otherCurr = otherCurr.getNext(true);
+        }
+        return dl;
+    }
+
     // O(n)
     public DataStructure[] split(boolean axis) {
         Container median = getMedian(axis);
@@ -346,17 +391,6 @@ public class DataStructure implements DT {
         }
         System.out.println(fromCont + "<-null");
     }
-
-    // O(|C|) - C = points from @fromCont to @toCont
-    // get the median container from @fromCont to @toCont
-    private Container getMedian(Container fromCont, Container toCont, boolean axis) {
-        while (!fromCont.equals(toCont) & !fromCont.getNext(axis).equals(toCont)) {
-            fromCont = fromCont.getNext(axis);
-            toCont = toCont.getPrev(axis);
-        }
-        return fromCont;
-    }
-
     // O(1)
     // return sqrt(power(x-x) + power(y-y))
     private static double getDistance(Point point1, Point point2) {
